@@ -22,3 +22,7 @@ export async function createUserHandler(req: Request<{}, {}, createUserInput['bo
     }
     
 }
+
+export async function getCurrentLoggedinUser(req:Request, res:Response) {
+    return res.send(res.locals.user)
+}
