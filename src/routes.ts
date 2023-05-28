@@ -3,7 +3,7 @@ import { createUserHandler, getCurrentLoggedinUser } from "./controllers/user.co
 import { validate } from "./middlewares/validate";
 import { createUserSchema } from "./schemas/user.schema";
 import { createSessionSchema } from "./schemas/session.schema";
-import { createSessionHandler } from "./controllers/session.controller";
+import { createSessionHandler, getUserSessions } from "./controllers/session.controller";
 import requireUser from "./middlewares/requireUser";
 function routes(app: Express) {
     app.get('/', (req: Request, res: Response) => {
@@ -14,6 +14,7 @@ function routes(app: Express) {
     app.post('/login', validate(createSessionSchema), createSessionHandler)
 
     app.get('/me', requireUser, getCurrentLoggedinUser)
+    app.get('/sessions', requireUser, getUserSessions)
 }
 
 export default routes;

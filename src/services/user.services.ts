@@ -2,6 +2,7 @@ import { compare, hashSync } from "bcrypt";
 import { env } from "process";
 import { createSessionInput } from "../schemas/session.schema"
 import db from "../config/db";
+import { User } from "@prisma/client";
 
 export function hashPassword(input: string): string {
     const rounds = Number(env.SALT)

@@ -29,7 +29,6 @@ class Logger extends EventEmitter {
 
     constructor() {
         super()
-
         
         const logDir = path.join(__dirname, '..', 'logs')
         if (!fs.existsSync(logDir)) {

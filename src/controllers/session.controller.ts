@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { validatePassword } from "../services/user.services";
 import { createSessionInput } from "../schemas/session.schema";
 import { OK, UNAUTHORIZED } from "http-status";
-import { createSession } from "../services/session.service";
+import { createSession, findUserSessions } from "../services/session.service";
 import { signJwt } from "../utils/jwt";
 
 export const createSessionHandler = async (req: Request<{}, {}, createSessionInput['body']>, res: Response) => {
@@ -11,12 +11,18 @@ export const createSessionHandler = async (req: Request<{}, {}, createSessionInp
 
     const session = await createSession(validUser.id, req.headers["user-agent"] || "")
 
-    const accessToken = signJwt(session.id, {expiresIn: "1h"})
+    const accessToken = signJwt(session.id, {expiresIn: "1m"})
     const refreshToken = signJwt(session.id, {expiresIn: "1d"})
 
     return (
-        res.cookie('accessT', accessToken, {httpOnly: true, maxAge:60 * 60 *1000, sameSite:'strict'}),
+        res.cookie('accessT', accessToken, {httpOnly: true, maxAge: 2 * 60 *1000, sameSite:'strict'}),
         res.cookie('refreshT', refreshToken, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000, sameSite: "strict" }),
         res.json({message: 'Access and refresh Token generated'}).status(OK)
     )
+}
+
+export async function getUserSessions(req:Request, res:Response) {
+    const sessionId = res.locals.user.id;
+    const userSessions = await findUserSessions(sessionId);
+    res.json(userSessions);
 }

@@ -22,11 +22,47 @@ export async function reissueAccesstoken(token: string): Promise<string | false 
 
     const session : Session = await db.session.findUniqueOrThrow({
         where: {
-            id: decoded
+            id: decoded.id
         }
     })
-
+    if (!session) return false
     const reIssuedAccesstoken = signJwt(session.id, {expiresIn: "1h"})
 
     return reIssuedAccesstoken
+}
+
+export const findUserSessions = async (id: string) => {
+    const session = await db.session.findUniqueOrThrow({
+        where: {
+            id,
+        },
+        select: {
+            user: {
+                select: {
+                    sessions: true
+                }
+            }
+        }
+    })
+
+    return session
+}
+
+export async function findSessionUser(id: string) {
+    const sessionUser = await db.session.findUnique({
+        where: {
+            id,
+        },
+        select: {
+            user: {
+                select: {
+                    firstName: true,
+                    lastName: true,
+                    email: true,
+                },
+            }
+        }
+    })
+
+    return sessionUser
 }

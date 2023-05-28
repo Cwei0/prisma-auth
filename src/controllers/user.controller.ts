@@ -4,6 +4,7 @@ import { CREATED, OK } from "http-status";
 import { createUserInput } from "../schemas/user.schema";
 import { hashPassword } from "../services/user.services";
 import { BAD_REQUEST } from "http-status";
+import { findSessionUser } from "../services/session.service";
 
 export async function createUserHandler(req: Request<{}, {}, createUserInput['body']>, res: Response) {
     const {Firstname, Lastname, email, password } = req.body
@@ -24,5 +25,7 @@ export async function createUserHandler(req: Request<{}, {}, createUserInput['bo
 }
 
 export async function getCurrentLoggedinUser(req:Request, res:Response) {
-    return res.send(res.locals.user)
+    const sessionId = res.locals.user.id;
+    const user = await findSessionUser(sessionId);
+    res.json(user);
 }
