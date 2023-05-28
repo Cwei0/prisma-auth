@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { validatePassword } from "../services/user.services";
-import { createSessionInput } from "../schemas/session.schema";
+import { createSessionInput } from "../schemas/auth.schema";
 import { OK, UNAUTHORIZED } from "http-status";
-import { createSession, findUserSessions } from "../services/session.service";
+import { createSession, findUserSessions } from "../services/auth.service";
 import { signJwt } from "../utils/jwt";
 
 export const createSessionHandler = async (

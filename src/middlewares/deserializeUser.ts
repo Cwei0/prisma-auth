@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyJwt } from "../utils/jwt";
-import { reissueAccesstoken } from "../services/session.service";
-import { OK } from "http-status";
-import log from "../utils/logger";
+import { reissueAccesstoken } from "../services/auth.service";
 
 const deserializerUser = async (
   req: Request,

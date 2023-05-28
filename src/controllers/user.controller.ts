@@ -4,7 +4,7 @@ import { CREATED, OK } from "http-status";
 import { createUserInput } from "../schemas/user.schema";
 import { hashPassword } from "../services/user.services";
 import { BAD_REQUEST } from "http-status";
-import { findSessionUser } from "../services/session.service";
+import { findSessionUser } from "../services/auth.service";
 
 export async function createUserHandler(
   req: Request<{}, {}, createUserInput["body"]>,

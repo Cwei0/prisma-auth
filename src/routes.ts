@@ -5,11 +5,11 @@ import {
 } from "./controllers/user.controller";
 import { validate } from "./middlewares/validate";
 import { createUserSchema } from "./schemas/user.schema";
-import { createSessionSchema } from "./schemas/session.schema";
+import { createSessionSchema } from "./schemas/auth.schema";
 import {
   createSessionHandler,
   getUserSessions,
-} from "./controllers/session.controller";
+} from "./controllers/auth.controller";
 import requireUser from "./middlewares/requireUser";
 function routes(app: Express) {
   app.get("/", (req: Request, res: Response) => {
