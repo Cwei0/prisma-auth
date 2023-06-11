@@ -1,7 +1,11 @@
 import { compare, hashSync } from "bcrypt";
 import { env } from "process";
-import { createSessionInput } from "../schemas/session.schema";
+import {
+  createSessionInput,
+  forgotPasswordInput,
+} from "../schemas/auth.schema";
 import db from "../config/db";
+import { User } from "@prisma/client";
 
 export function hashPassword(input: string): string {
   const rounds = Number(env.SALT);
@@ -22,4 +26,18 @@ export async function validatePassword({
   if (!isValid) return false;
 
   return user;
+}
+
+export async function validateEmail({
+  email,
+}: forgotPasswordInput["body"]) {
+  const user = await db.user.findUniqueOrThrow({
+    where: {
+      email,
+    },
+  });
+  if (!user) {
+    return false
+  } 
+  return user
 }

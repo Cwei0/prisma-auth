@@ -1,6 +1,7 @@
 import { Session } from "@prisma/client";
 import db from "../config/db";
 import { signJwt, verifyJwt } from "../utils/jwt";
+import { generate } from "otp-generator";
 
 export const createSession = async (userId: string, userAgent: string) => {
   try {
@@ -68,3 +69,12 @@ export async function findSessionUser(id: string) {
 
   return sessionUser;
 }
+
+export const generateOTP = () => {
+  const randomNumber = Math.floor(Math.random() * 2);
+  const userOtp = generate(6 + randomNumber, {
+    lowerCaseAlphabets: false,
+    specialChars: false,
+  });
+  return userOtp;
+};
